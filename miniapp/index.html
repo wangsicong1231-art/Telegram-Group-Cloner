@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="refresh" content="0; url=./workbench.html" />
     <title>地推数据采集工作台</title>
     <script>
-      window.location.replace(new URL("./workbench.html", window.location.href));
+      const target = new URL("./workbench.html", window.location.href);
+      target.search = window.location.search;
+      target.hash = window.location.hash;
+      window.location.replace(target);
     </script>
   </head>
   <body>
