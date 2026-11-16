@@ -6,6 +6,10 @@
 
 一个 Windows 桌面版 Telegram 群组运营自动化控制台，支持配置 Telegram API、代理、源群/目标群、过滤与替换规则、账号池 session 管理、手机验证码登录、扫码登录、监听转发、日志导出。
 
+## Telegram Mini App
+
+`miniapp/` contains the separate “地推数据采集” Mini App frontend recovered from the supplied APK and adapted for Telegram Web Apps. It does not replace or change the Windows desktop application. See [Mini App setup and deployment](miniapp/README.md); backend-dependent operations require a separately configured HTTPS service.
+
 ## 快速启动
 
 ```powershell
