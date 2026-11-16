@@ -157,6 +157,22 @@
     if (typeof dialog.showModal === "function") dialog.showModal();
   };
 
+  const openBindingDialog = () => {
+    if (isDeviceBound) {
+      showDialog("设备已绑定", "当前 Telegram 账号已绑定设备。");
+      return;
+    }
+    if (typeof activationDialog.showModal !== "function") {
+      showDialog("暂不支持设备绑定", "请使用支持弹窗的 Telegram 客户端打开小程序。");
+      return;
+    }
+    activationForm.reset();
+    activationMessage.textContent = backendAvailable
+      ? ""
+      : "绑定入口已打开；后台服务尚未连接，暂时无法验证激活码。";
+    activationDialog.showModal();
+  };
+
   const showToast = (message) => {
     toast.textContent = message;
     toast.classList.add("is-visible");
@@ -216,7 +232,7 @@
     const button = event.target.closest("[data-action]");
     if (!button) return;
 
-    if (!isDeviceBound && !["device-bind", "close-dialog"].includes(button.dataset.action)) {
+    if (!isDeviceBound && !["bind", "device-bind", "close-dialog"].includes(button.dataset.action)) {
       event.preventDefault();
       showDialog("请先绑定设备", "绑定设备后才能使用刷新、账号绑定、收益查看、收款方式设置、采集通知、设备激活和进入公群。当前版本尚无设备绑定服务，不会虚构绑定结果。");
       return;
@@ -231,21 +247,8 @@
         showToast("正在刷新后台状态");
         break;
       case "bind":
-        showDialog(
-          telegramIdentityVerified ? "Telegram 会话已验证" : "绑定服务尚未接入",
-          telegramIdentityVerified
-            ? "服务器已验证当前 Telegram 用户身份。与其他业务账号的关联仍需对应的服务端接口。"
-            : "当前仅能读取 Telegram 客户端提供的会话信息，尚无服务端身份校验与账号绑定接口，因此不会将此账号标记为已绑定。",
-        );
-        break;
       case "device-bind":
-        if (backendAvailable && typeof activationDialog.showModal === "function") {
-          activationMessage.textContent = "";
-          activationForm.reset();
-          activationDialog.showModal();
-        } else {
-          showDialog("设备绑定服务尚未接入", "请部署后台配置服务并在 Telegram 环境中打开小程序，输入管理员生成的设备激活码后完成绑定。");
-        }
+        openBindingDialog();
         break;
       case "devices":
         showDialog("设备数据待同步", "绑定设备数量和设备状态需要由服务端返回。当前页面不展示模拟设备或虚构统计。");
