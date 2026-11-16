@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>地推数据采集工作台</title>
+    <script>
+      const target = new URL("./workbench.html", window.location.href);
+      target.search = window.location.search;
+      target.hash = window.location.hash;
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>正在打开旧版工作台…</p>
+    <a href="./workbench.html">如果没有自动跳转，请点击这里</a>
+  </body>
+</html>
