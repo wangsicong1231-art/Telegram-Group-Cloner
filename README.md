@@ -8,7 +8,7 @@
 
 ## Telegram Mini App
 
-`miniapp/` contains the separate “地推数据采集” Mini App frontend recovered from the supplied APK and adapted for Telegram Web Apps. It does not replace or change the Windows desktop application. See [Mini App setup and deployment](miniapp/README.md); backend-dependent operations require a separately configured HTTPS service.
+`miniapp/` contains the separate “地推数据采集” Mini App adapted for Telegram Web Apps and an optional Python configuration backend for the admin console, public group link, ticker, and one-time device activation codes. It does not replace or change the Windows desktop application. Earnings, collection records, notifications, and payout submission still need business APIs. See [Mini App setup and deployment](miniapp/README.md).
 
 ## 快速启动
 
