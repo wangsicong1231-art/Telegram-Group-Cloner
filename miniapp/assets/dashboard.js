@@ -1,4 +1,6 @@
 (() => {
+  const DEMO_ACTIVATION_CODE = "ZXCQ19902221";
+  const SERVER_NOT_CONFIGURED_MESSAGE = "未配置服务器，请联系公群老板";
   const app = window.Telegram?.WebApp;
   const nameNode = document.querySelector("#user-name");
   const statusNode = document.querySelector("#auth-status");
@@ -234,7 +236,13 @@
 
     if (!isDeviceBound && !["bind", "device-bind", "close-dialog"].includes(button.dataset.action)) {
       event.preventDefault();
-      showDialog("请先绑定设备", "绑定设备后才能使用刷新、账号绑定、收益查看、收款方式设置、采集通知、设备激活和进入公群。当前版本尚无设备绑定服务，不会虚构绑定结果。");
+      showDialog("请先绑定设备", "请点击右上角“绑定”，输入激活码后继续。");
+      return;
+    }
+
+    if (isDeviceBound && !backendAvailable && button.dataset.action !== "close-dialog") {
+      event.preventDefault();
+      showDialog("服务器未配置", SERVER_NOT_CONFIGURED_MESSAGE);
       return;
     }
 
@@ -297,7 +305,16 @@
       return;
     }
     if (!backendAvailable) {
-      activationMessage.textContent = "后台服务尚未连接，暂时无法验证激活码。";
+      if (activationCode.value.trim().toUpperCase() !== DEMO_ACTIVATION_CODE) {
+        activationMessage.textContent = "激活码不正确，请检查后重试。";
+        return;
+      }
+      activationDialog.close();
+      updateDeviceBinding(true);
+      showDialog(
+        "激活完成",
+        `${SERVER_NOT_CONFIGURED_MESSAGE} 当前设备状态尚未在服务器完成绑定。`,
+      );
       return;
     }
     try {

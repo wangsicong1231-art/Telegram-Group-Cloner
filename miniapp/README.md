@@ -48,6 +48,8 @@ Set `MINIAPP_SECRET_KEY`, `MINIAPP_ADMIN_PASSWORD`, and `MINIAPP_TELEGRAM_BOT_TO
 
 The binding API verifies Telegram's signed `WebApp.initData` on the server, checks code expiry and one-time use, then reports the account's binding state to the Mini App. The frontend keeps all features gated until that API confirms a binding. Activation requires a valid BotFather token and HTTPS deployment. The administrator console must only be exposed over HTTPS.
 
+On the static Pages preview only, `ZXCQ19902221` is a client-side demo activation code. It unlocks the local page state and shows a server-not-configured message; it is public in the frontend bundle and is not secure authentication or a real device binding. Deploy the Python service to enable server-verified activation.
+
 The admin console currently configures the public group URL and ticker messages. Earnings totals, collection records, activation counts, live collection notifications, and payout-method submission/storage still need the corresponding business data services. The WeChat/Alipay QR picker only provides local preview, and USDT details are not sent or saved. The fixed “公群老板 @hccck” label is not configurable.
 
 The home page no longer links to the collection workbench. It accepts only HTTPS links on `t.me` or `telegram.me`; the read-only “公群老板 @hccck” label is fixed at the bottom of the dashboard. The existing bundled workbench separately requires a configured HTTPS service for account, upload, review, and finance operations.
