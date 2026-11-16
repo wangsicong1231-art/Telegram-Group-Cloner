@@ -1,6 +1,6 @@
 # Telegram Mini App
 
-This directory contains the Telegram Mini App. The redesigned `index.html` is a data-collection and notifications dashboard; the existing bundled collection application remains available at `workbench.html`. It is separate from the Python/Tkinter desktop application in the repository root.
+This directory contains two separate Telegram Mini App versions. The existing bundled collection application is available at the site root and `workbench.html`; the redesigned data-collection and notifications dashboard is at `dashboard.html`. This is separate from the Python/Tkinter desktop application in the repository root.
 
 ## Local preview
 
@@ -11,11 +11,11 @@ cd miniapp
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000` in a browser to preview the dashboard. The legacy collection workbench is at `http://localhost:8000/workbench.html`.
+Open `http://localhost:8000` in a browser to preview the legacy collection workbench. The redesigned dashboard is at `http://localhost:8000/dashboard.html`.
 
 ## GitHub Pages deployment
 
-The repository includes a workflow that publishes this directory to GitHub Pages when changes are merged to `main`. Enable **Settings → Pages → Build and deployment → GitHub Actions**, then merge the changes and wait for the **Deploy Telegram Mini App** workflow to finish. The site URL is `https://wangsicong1231-art.github.io/Telegram-Group-Cloner/`. Set that URL as the bot's Mini App/menu-button URL in @BotFather.
+The repository includes a workflow that publishes this directory to GitHub Pages when changes are merged to `main`. Enable **Settings → Pages → Build and deployment → GitHub Actions**, then merge the changes and wait for the **Deploy Telegram Mini App** workflow to finish. The site root redirects to the legacy workbench at `https://wangsicong1231-art.github.io/Telegram-Group-Cloner/workbench.html`; the redesigned dashboard is at `https://wangsicong1231-art.github.io/Telegram-Group-Cloner/dashboard.html`. Point the old bot to the site root and the new bot to `dashboard.html` to keep the versions separate.
 
 The asset references support the GitHub Pages repository subpath as well as a root-domain deployment. For other hosting providers, publish the contents of this directory over HTTPS.
 
