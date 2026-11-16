@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3f6fb" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>后台配置 · 充电宝数据采集</title>
+    <link rel="stylesheet" href="./assets/admin.css" />
+    <script src="./assets/admin.js" defer></script>
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="admin-topbar">
+        <a class="admin-brand" href="/admin" aria-label="后台配置首页">
+          <span class="admin-brand-mark" aria-hidden="true">⚡</span>
+          <span><strong>运营配置</strong><small>CHARGING DATA · ADMIN</small></span>
+        </a>
+        <a class="back-link" href="/">打开小程序 <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <section class="login-panel panel" id="login-panel" aria-labelledby="login-title" hidden>
+        <p class="eyebrow">ADMIN ACCESS</p>
+        <h1 id="login-title">后台登录</h1>
+        <p class="panel-intro">请使用部署时配置的管理员密码登录。</p>
+        <form id="login-form" class="stack-form">
+          <label for="admin-password">管理员密码</label>
+          <input id="admin-password" name="password" type="password" autocomplete="current-password" required />
+          <button class="primary-button" type="submit">安全登录</button>
+          <p class="form-message" id="login-message" role="status"></p>
+        </form>
+      </section>
+
+      <div id="admin-panel" hidden>
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">ADMIN CONSOLE</p>
+            <h1>后台配置</h1>
+            <p>管理小程序公群入口、循环播报和设备激活码。</p>
+          </div>
+          <button class="quiet-button" id="logout-button" type="button">退出登录</button>
+        </section>
+
+        <div class="system-notice" id="system-notice" role="status" hidden></div>
+
+        <section class="panel" aria-labelledby="general-title">
+          <div class="panel-heading">
+            <div><p class="eyebrow">MINI APP</p><h2 id="general-title">页面配置</h2></div>
+            <span class="status-badge">服务端管理</span>
+          </div>
+          <form id="config-form" class="stack-form">
+            <label for="public-group-url">公群链接</label>
+            <input id="public-group-url" name="publicGroupUrl" type="url" placeholder="https://t.me/your_group" inputmode="url" />
+            <small>仅接受 HTTPS 的 t.me 或 telegram.me 链接。保存后小程序的“进入公群”入口会使用此链接。</small>
+
+            <label for="announcement-messages">顶部循环播报</label>
+            <textarea id="announcement-messages" name="announcementMessages" rows="5" maxlength="1000" placeholder="每行一条，最多 8 条；每条不超过 120 个字符"></textarea>
+            <small>每行一条，最多 8 条；每条不超过 120 个字符。</small>
+
+            <div class="form-footer">
+              <p class="form-message" id="config-message" role="status"></p>
+              <button class="primary-button" type="submit">保存页面配置</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel" aria-labelledby="codes-title">
+          <div class="panel-heading">
+            <div><p class="eyebrow">DEVICE ACTIVATION</p><h2 id="codes-title">设备激活码</h2></div>
+            <span class="status-badge" id="telegram-status">检查 Telegram 配置…</span>
+          </div>
+          <p class="panel-intro">激活码由服务器安全随机生成，只显示一次；数据库仅保存不可逆摘要。每个激活码只能绑定一个 Telegram 账号。</p>
+          <form id="code-form" class="code-form">
+            <label>生成数量
+              <input id="code-quantity" type="number" min="1" max="25" value="1" required />
+            </label>
+            <label>有效天数
+              <input id="code-expiry" type="number" min="1" max="365" value="30" required />
+            </label>
+            <button class="primary-button" type="submit">自动生成激活码</button>
+          </form>
+          <div class="code-list" id="code-list" aria-live="polite"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>编号</th><th>状态</th><th>创建时间</th><th>有效期至</th><th></th></tr></thead>
+              <tbody id="codes-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="bindings-title">
+          <div class="panel-heading">
+            <div><p class="eyebrow">BOUND DEVICES</p><h2 id="bindings-title">已绑定账号</h2></div>
+            <button class="quiet-button" id="refresh-bindings" type="button">刷新列表</button>
+          </div>
+          <p class="panel-intro">绑定状态由服务器校验的 Telegram 会话决定。解除绑定后，该账号需要新的激活码才能重新绑定。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Telegram 用户 ID</th><th>绑定时间</th><th></th></tr></thead>
+              <tbody id="bindings-table"></tbody>
+            </table>
+          </div>
+        </section>
+        <footer class="admin-footer">管理员配置仅在本后台服务端保存；请勿将管理员密码或激活码发布到公开群组。</footer>
+      </div>
+    </main>
+
+    <dialog class="codes-dialog" id="codes-dialog" aria-labelledby="codes-dialog-title">
+      <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="关闭">×</button></form>
+      <p class="eyebrow">ONE-TIME DISPLAY</p>
+      <h2 id="codes-dialog-title">请立即保存激活码</h2>
+      <p>出于安全考虑，激活码只在生成时完整显示一次。离开此窗口后无法再次查看。</p>
+      <div class="issued-codes" id="issued-codes"></div>
+      <button class="primary-button" id="copy-codes" type="button">复制全部激活码</button>
+      <button class="quiet-button dialog-done" type="button" id="close-codes-dialog">我已保存</button>
+    </dialog>
+  </body>
+</html>
