@@ -312,8 +312,8 @@
       activationDialog.close();
       updateDeviceBinding(true);
       showDialog(
-        "演示激活完成",
-        `${SERVER_NOT_CONFIGURED_MESSAGE} 当前激活状态仅用于页面演示，未完成服务端设备绑定。`,
+        "激活完成",
+        `${SERVER_NOT_CONFIGURED_MESSAGE} 当前设备状态尚未在服务器完成绑定。`,
       );
       return;
     }
